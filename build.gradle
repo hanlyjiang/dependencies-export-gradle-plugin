@@ -23,7 +23,7 @@ dependencies {
 
 // https://guides.gradle.org/publishing-plugins-to-gradle-plugin-portal/
 pluginBundle {
-    website = 'http://hanlyjiang.cn'
+    website = 'https://github.com/hanlyjiang/dependencies-export-gradle-plugin/README.md'
     vcsUrl = 'https://github.com/hanlyjiang/dependencies-export-gradle-plugin'
     tags = ['android', 'dependencies']
 }
