@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'java-gradle-plugin'
+    id "com.gradle.plugin-publish" version "0.10.1"
+}
+
+group = "cn.hanlyjiang.gradle"
+version = "0.0.1"
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl
+    compile group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
+
+}
+
+// https://guides.gradle.org/publishing-plugins-to-gradle-plugin-portal/
+pluginBundle {
+    website = 'http://hanlyjiang.cn'
+    vcsUrl = 'https://github.com/hanlyjiang/dependencies-export-gradle-plugin'
+    tags = ['android', 'dependencies']
+}
+
+
+gradlePlugin {
+    plugins {
+        dependenceOutputPlugin {
+            id = 'cn.hanlyjiang.gradle.analysis'
+            displayName = 'DependenceExport2Excel'
+            description = "Export Project's all denpendencis to an excel file."
+            implementationClass = 'cn.hanlyjiang.gradle.analysis.DependenceOutputPlugin'
+        }
+    }
+}
