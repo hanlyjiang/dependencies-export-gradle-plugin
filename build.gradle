@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "cn.hanlyjiang.gradle"
-version = "0.0.1"
+version = "0.0.2"
 
 
 sourceCompatibility = 1.8
@@ -23,7 +23,7 @@ dependencies {
 
 // https://guides.gradle.org/publishing-plugins-to-gradle-plugin-portal/
 pluginBundle {
-    website = 'http://hanlyjiang.cn'
+    website = 'https://github.com/hanlyjiang/dependencies-export-gradle-plugin/README.md'
     vcsUrl = 'https://github.com/hanlyjiang/dependencies-export-gradle-plugin'
     tags = ['android', 'dependencies']
 }
