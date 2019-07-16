@@ -4,6 +4,7 @@ import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Dependency;
@@ -77,15 +78,17 @@ public class DependenceOutput extends DefaultTask {
 
 
     private void writeOneDependence(Dependency dependency) {
-        String info = deptInfo2Str(dependency);
-        if (isEmpty(info)) {
+        List<String> info = deptInfo2Str(dependency);
+        if (info == null || info.isEmpty()) {
             return;
         }
-        LogUtils.i(info);
-        try {
-            sheet.addCell(new Label(0, rowCount++, info));
-        } catch (WriteException e) {
-            e.printStackTrace();
+        for (String item : info) {
+            LogUtils.i(item);
+            try {
+                sheet.addCell(new Label(0, rowCount++, item));
+            } catch (WriteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -98,28 +101,26 @@ public class DependenceOutput extends DefaultTask {
     }
 
 
-    protected String deptInfo2Str(Dependency dependency) {
+    protected List<String> deptInfo2Str(Dependency dependency) {
+        List<String> result = new ArrayList<>();
         if (dependency instanceof SelfResolvingDependency) {
             Set<File> resolve = ((SelfResolvingDependency) dependency).resolve(true);
             StringBuffer stringBuffer = new StringBuffer();
             int i = 0;
             for (File file : resolve) {
                 LogUtils.w("name:" + file.getName() + "i=" + i + "," + "size=" + resolve.size());
-                stringBuffer.append(formatDept(dependency.getGroup(), file.getName(), dependency.getVersion()) + "\n");
-                if (resolve.size() == ++i) {
-                    stringBuffer.deleteCharAt(stringBuffer.length() - 1);
-                }
+                result.add(formatDept(dependency.getGroup(), file.getName(), dependency.getVersion()));
             }
-            return stringBuffer.toString();
         } else if (dependency instanceof ExternalModuleDependency) {
             ExternalModuleDependency dept = (ExternalModuleDependency) dependency;
             dept.getArtifacts().forEach(dependencyArtifact -> {
 //                LogUtils.w("-----" + deptArtifactInfo(dependencyArtifact));
             });
-            return formatDept(dependency.getGroup(), dependency.getName(), dependency.getVersion());
+            result.add(formatDept(dependency.getGroup(), dependency.getName(), dependency.getVersion()));
         } else {
-            return formatDept(dependency.getGroup(), dependency.getName(), dependency.getVersion());
+            result.add(formatDept(dependency.getGroup(), dependency.getName(), dependency.getVersion()));
         }
+        return result;
     }
 
 
